@@ -3,13 +3,6 @@ export function navigateTo(path: string) {
   window.dispatchEvent(new PopStateEvent('popstate'))
 }
 
-export function normalizeWorkspaceRole(role: string) {
-  const normalized = role.toLowerCase()
-  if (normalized.includes('finance')) return 'finance'
-  if (normalized.includes('leadership')) return 'leadership'
-  return 'engineer'
-}
-
 export interface WorkspaceNavItem {
   path: string
   label: string

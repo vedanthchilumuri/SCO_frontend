@@ -88,7 +88,7 @@ export function RegisterPage() {
   const { register } = useAuth()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [role, setRole] = useState('')
+  const [jobDescription, setJobDescription] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState<string>()
@@ -108,7 +108,7 @@ export function RegisterPage() {
     }
     setLoading(true)
     try {
-      await register(email.trim(), password, name.trim(), role)
+      await register(email.trim(), password, name.trim(), jobDescription.trim())
       navigateTo('/')
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Unable to create your account.')
@@ -123,7 +123,7 @@ export function RegisterPage() {
       <form className="auth-form" onSubmit={(event) => void submit(event)}>
         <label className="form-field"><span>Full name</span><input autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Alex Smith" required /></label>
         <label className="form-field"><span>Work email</span><input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@company.com" required /></label>
-        <label className="form-field"><span>Workspace role</span><select value={role || 'engineer'} onChange={(event) => setRole(event.target.value)}><option value="engineer">Engineer — inventory and optimization</option><option value="finance">Finance — spend, forecasts, and reports</option><option value="leadership">Leadership — overview and business insights</option></select></label>
+        <label className="form-field"><span>Job description</span><input value={jobDescription} onChange={(event) => setJobDescription(event.target.value)} maxLength={120} placeholder="e.g. Cloud engineer" required /></label>
         <label className="form-field"><span>Password</span><input type="password" autoComplete="new-password" minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="At least 8 characters" required /></label>
         {password && <div className="password-strength" aria-live="polite"><div className="strength-meter">{[1, 2, 3, 4].map((step) => <span className={step <= strength ? `strength-${strength}` : ''} key={step} />)}</div><small>{strengthLabel}</small></div>}
         <label className="form-field"><span>Confirm password</span><input type="password" autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Re-enter your password" required /></label>

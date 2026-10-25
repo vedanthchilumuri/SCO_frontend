@@ -41,7 +41,6 @@ export function AppShell({ user, path, navigate, onLogout, onToggleTheme, dark, 
         <button type="button" className="workspace-picker" onClick={() => navigate('/company')} aria-label="Open company details">
           <span className="workspace-avatar">SC</span>
           <span className="workspace-label"><strong>{companyName ?? company.data?.name ?? 'Your company'}</strong><small>Company details</small></span>
-          <span className="workspace-chevron">⌄</span>
         </button>
         <nav className="sidebar-nav" aria-label="Main navigation">
           {visibleNavigation.map((group) => (

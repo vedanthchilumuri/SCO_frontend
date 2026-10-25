@@ -92,7 +92,7 @@ export function RecommendationsPage() {
             <div className="recommendation-caveat"><Icon name="assistant" size={18} /><p>Check resize advice against p95 and p99 usage, not averages alone. Apply changes through your normal rollout process.</p></div>
           </div>
           <Panel title="Optimization engine" subtitle="Run peak-aware candidate scoring against a review budget. This is a proposal, not an infrastructure action.">
-            <div className="inventory-filters">
+            <div className="inventory-filters optimizer-controls">
               <label className="form-field"><span>Selection budget (INR)</span><input type="number" min="1" step="1000" value={optimizationBudget} onChange={(event) => setOptimizationBudget(event.target.value)} /></label>
               <Button onClick={() => void runOptimizer()} disabled={optimizerBusy || !Number(optimizationBudget)}>{optimizerBusy && <span className="button-spinner" />}Run optimizer</Button>
             </div>

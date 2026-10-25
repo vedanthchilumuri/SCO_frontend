@@ -46,9 +46,11 @@ export function CostsPage() {
             </Panel>
           </div>
           <Panel title="Current spend vs. optimized" subtitle="Comparison assumes pending recommendations are accepted">
-            <div className="comparison">
+            <div className="comparison" role="img" aria-label={`Monthly spend comparison in INR. Categories are current monthly spend ${formatCurrency(data.comparison.current_monthly_spend)}, projected savings ${formatCurrency(data.comparison.projected_monthly_savings)}, and after optimization ${formatCurrency(data.comparison.optimized_monthly_spend)}.`}>
               <div className="comparison-labels"><span>Current monthly spend<strong>{formatCurrency(data.comparison.current_monthly_spend)}</strong></span><span>Projected monthly savings<strong className="text-green">{formatCurrency(data.comparison.projected_monthly_savings)}</strong></span><span>After optimization<strong>{formatCurrency(data.comparison.optimized_monthly_spend)}</strong></span></div>
-              <div className="comparison-track"><span style={{ width: `${data.comparison.current_monthly_spend > 0 ? Math.min((data.comparison.optimized_monthly_spend / data.comparison.current_monthly_spend) * 100, 100) : 0}%` }} /><i /></div>
+              <div className="comparison-axis-label">Monthly amount (INR)</div>
+              <div className="comparison-track" title={`Current: ${formatCurrency(data.comparison.current_monthly_spend)} · Savings: ${formatCurrency(data.comparison.projected_monthly_savings)} · Optimized: ${formatCurrency(data.comparison.optimized_monthly_spend)}`}><span style={{ width: `${data.comparison.current_monthly_spend > 0 ? Math.min((data.comparison.optimized_monthly_spend / data.comparison.current_monthly_spend) * 100, 100) : 0}%` }} /><i /></div>
+              <div className="comparison-x-axis"><span>₹0</span><span>{formatCurrency(data.comparison.current_monthly_spend)}</span></div>
               <div className="comparison-foot"><span><i className="legend-cpu" />Projected spend</span><span><i className="legend-memory" />Savings opportunity</span></div>
             </div>
           </Panel>

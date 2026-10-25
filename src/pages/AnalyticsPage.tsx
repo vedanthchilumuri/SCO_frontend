@@ -10,7 +10,7 @@ import { formatDate, formatPercentile, getDistinct } from '../utils/format'
 export function AnalyticsPage() {
   const inventory = useApiQuery(api.inventory, 'analytics-inventory')
   const fleet = useApiQuery(api.fleetMetrics, 'analytics-fleet')
-  const [selectedId, setSelectedId] = useState('')
+  const [selectedId, setSelectedId] = useState(() => new URLSearchParams(window.location.search).get('resource') ?? '')
   const [region, setRegion] = useState('All regions')
   const [environment, setEnvironment] = useState('All environments')
   const [team, setTeam] = useState('All teams')

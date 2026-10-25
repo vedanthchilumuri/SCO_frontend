@@ -12,6 +12,13 @@ export function ForecastPage() {
   }, [])
   const query = useApiQuery(loadForecast, 'forecast')
   const data = query.data
+  const forecastValues = data ? [
+    ['Now', data.cost.current_monthly_spend],
+    ['30 days', data.cost.forecast_30_days],
+    ['60 days', data.cost.forecast_60_days],
+    ['90 days', data.cost.forecast_90_days],
+  ] as const : []
+  const forecastMax = Math.max(data?.cost.current_monthly_spend ?? 0, data?.cost.forecast_30_days ?? 0, data?.cost.forecast_60_days ?? 0, data?.cost.forecast_90_days ?? 0, 1)
   return (
     <>
       <PageHeader eyebrow="PLAN AHEAD" title="Spend forecast" description="A near-term view of projected costs and the operating decisions that can help keep growth predictable." action={<button type="button" className="text-action" onClick={() => void query.reload()} disabled={query.loading}><Icon name="clock" size={15} /> Refresh forecast</button>} />
@@ -25,16 +32,13 @@ export function ForecastPage() {
             <StatCard label="90-day projection" value={formatCurrency(data.cost.forecast_90_days)} caption="Estimated in three months" icon="forecast" tone="amber" />
           </div>
           <Panel title="Projected monthly spend" subtitle="Backend forecast at 30, 60, and 90 days">
-            <div className="forecast-chart">
-              {[
-                ['Now', data.cost.current_monthly_spend],
-                ['30 days', data.cost.forecast_30_days],
-                ['60 days', data.cost.forecast_60_days],
-                ['90 days', data.cost.forecast_90_days],
-              ].map(([period, value]) => {
-                const max = Math.max(data.cost.current_monthly_spend, data.cost.forecast_90_days, 1)
-                return <div className="forecast-chart-column" key={String(period)}><strong>{formatCurrency(Number(value), true)}</strong><span className="forecast-chart-bar" style={{ height: `${Math.max(Number(value) / max * 100, 8)}%` }} /><small>{period}</small></div>
-              })}
+            <div className="forecast-chart" role="img" aria-label="Projected monthly spend bar chart. Horizontal axis is forecast period; vertical axis is monthly spend in Indian rupees. Hover a bar for its value.">
+              <span className="forecast-y-axis-title">Monthly spend (INR)</span>
+              <div className="forecast-y-axis-ticks" aria-hidden="true"><span>{formatCurrency(forecastMax, true)}</span><span>{formatCurrency(forecastMax / 2, true)}</span><span>₹0</span></div>
+              <div className="forecast-chart-columns">
+                {forecastValues.map(([period, value]) => <div className="forecast-chart-column" key={period}><strong>{formatCurrency(value, true)}</strong><span className="forecast-chart-bar" title={`${period}: ${formatCurrency(value)} monthly spend`} style={{ height: `${Math.max(value / forecastMax * 100, 8)}%` }} /><small>{period}</small></div>)}
+              </div>
+              <span className="forecast-x-axis-title">Forecast period</span>
             </div>
           </Panel>
           <Panel title="Usage trend" subtitle="Based on current utilization and forecast signals">
